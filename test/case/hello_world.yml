@@ -1,0 +1,5 @@
+---
+desc: まずはお馴染みHello world!
+steps:
+  -
+    dump: "'Hello world!'"

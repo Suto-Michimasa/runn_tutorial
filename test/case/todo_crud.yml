@@ -1,0 +1,36 @@
+---
+desc: "TodoアイテムのCRUDシナリオ"
+runners:
+  req: http://localhost:8080
+
+steps:
+  # 1. Create
+  - req:
+      /todos:
+        post:
+          body:
+            application/json:
+              title: "買い物に行く"
+              done: false
+  - test: steps[0].res.status == 201
+
+  # 2. Read
+  - req:
+      "/todos/{{ steps[0].res.body.id }}":
+        get: {}
+  - test: steps[2].res.body.title == "買い物に行く"
+
+  # 3. Update
+  - req:
+      "/todos/{{ steps[0].res.body.id }}":
+        patch:
+          body:
+            application/json:
+              done: true
+  - test: steps[4].res.body.done == true
+
+  # 4. Delete
+  - req:
+      "/todos/{{ steps[0].res.body.id }}":
+        delete: {}
+  - test: steps[6].res.status == 204
