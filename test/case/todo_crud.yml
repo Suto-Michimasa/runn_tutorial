@@ -34,3 +34,12 @@ steps:
       "/todos/{{ steps[0].res.body.id }}":
         delete: {}
   - test: steps[6].res.status == 204
+  # 5. 削除確認（GETで404を期待）
+  - req:
+      "/todos/{{ steps[0].res.body.id }}":
+        get: {}
+  - test: steps[8].res.status == 404
+
+  - dump: steps[0].res.body
+  - dump: steps[2].res.body
+  - dump: steps[4].res.body

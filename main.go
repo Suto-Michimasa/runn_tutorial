@@ -6,9 +6,13 @@ import (
 	"sync"
 )
 
+var (
+	store *Store
+	mu    sync.Mutex
+)
+
 func main() {
-	var mu sync.Mutex
-	store := NewStore()
+	store = NewStore()
 	router := NewRouter(store)
 
 	http.Handle("/", router)
@@ -16,7 +20,6 @@ func main() {
 	http.HandleFunc("/reset", func(w http.ResponseWriter, r *http.Request) {
 		mu.Lock()
 		store = NewStore()
-		router = NewRouter(store)
 		mu.Unlock()
 		w.WriteHeader(http.StatusNoContent)
 	})
